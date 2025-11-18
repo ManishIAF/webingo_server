@@ -8,12 +8,7 @@ const getUserById = async (id) => {
 
     if (!user) {
 
-      return{
-        
-        success: false,
-        message: "User not found"
-        
-      }
+      throw new AppError('user not found',404)
 
     }
 
@@ -21,7 +16,10 @@ const getUserById = async (id) => {
     
   } catch (error) {
 
-    throw new AppError(error.message || "Error while fetching user data", 500);
+    let pureMessage = error?.errors
+      ? Object.values(error.errors)[0].message
+      : error.message;
+    throw new AppError(pureMessage||error.message || "Error while fetching user data", 500);
 
   }
 }
@@ -39,10 +37,7 @@ const getUserByEmail = async (email, includePassword = false) => {
     const user = await query;
 
     if (!user) {
-      return {
-        success: false,
-        message: "User not found",
-      };
+     throw new AppError('user not found',404)
     }
 
     return user;

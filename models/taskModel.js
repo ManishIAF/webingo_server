@@ -15,6 +15,7 @@ const taskSchema = new Schema({
   },
   description: {
     type: String,
+    required:[true,'description is required'],
     trim: true,
     maxlength: [1000, "Description cannot exceed 1000 characters"],
     default: "",

@@ -29,10 +29,6 @@ const Login = async (req, res, next) => {
             throw new AppError('Invalid Password', 400);
         }
 
-        /*if(user.isAccountVerified === false){
-            throw new AppError('Account not verified', 401);
-        }*/
-
         // create refresh and access token
         const {refreshToken, accessToken} = createRefreshAndAccessToken({_id:user._id,role:user.role});
         
@@ -95,43 +91,29 @@ const Signup = async (req, res,next) => {
         }
 }
 
-/*const verifyUserAccount = async(req,res,next) => {
-    try {
-        
-        const {otp,email} = req.body;
-
-        if(!otp || !email){
-            throw new AppError('invalid credentials', 400);
-        }
-
-        await verifyAccount(email,otp);
-        
-        return res.status(200).send({
-            success:true,
-            message:'user verified successfully'
-        })
-        
-
-    } catch (error) {
-
-        next(error);
-    }
-}*/
 
 const logout = async(req,res) => {
     try {
-        res.clearCookie("Webingo");
+        
+        res.clearCookie("webingo", {
+            httpOnly: true,
+            secure: true,
+            sameSite: 'none',
+        });
+
         res.status(200).send({
             success:true,
             message:'user logged out successfully'
         })
+
     } catch (error) {
-        console.log('error : ',error)
+        
         res.status(500).send({
             success:false,
             message:'Server error'
         })
+
     }
 }
 
-export {Login,Signup/*,verifyUserAccount*/,logout};  
+export {Login,Signup,logout};  

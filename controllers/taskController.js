@@ -1,4 +1,4 @@
-import { getAllTasks,createTask,getTasksByUserId, deleteTaskById } from "../services/task/taskServices.js";
+import { getAllTasks,createTask,getTasksByUserId, deleteTaskById, updateTaskById } from "../services/task/taskServices.js";
 
 const getAllTasksController = async (req, res, next) => {
     try {
@@ -99,6 +99,24 @@ const deleteTaskByIdController = async (req, res, next) => {
     }
 };
 
+const updateTaskByIdController = async (req, res, next) => {
+  try {
+    const { user_id } = req.user;
+    const taskId = req.params.id;
+    const updateData = req.body;
+    console.log('Update Data Received:', updateData);
+    const updatedTask = await updateTaskById(user_id, taskId, updateData);
 
-export { getAllTasksController, createTaskController, getTasksByUserIdController,deleteTaskByIdController };
+    res.status(200).json({
+      success: true,
+      data: updatedTask
+    });
+
+  } catch (error) {
+    next(error);
+  }
+};
+
+
+export { getAllTasksController, createTaskController, getTasksByUserIdController,deleteTaskByIdController,updateTaskByIdController };
   
