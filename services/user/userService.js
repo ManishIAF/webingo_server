@@ -37,7 +37,10 @@ const getUserByEmail = async (email, includePassword = false) => {
     const user = await query;
 
     if (!user) {
-     throw new AppError('user not found',404)
+      return {
+        success:false,
+        message:'user not found'
+      };
     }
 
     return user;
